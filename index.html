@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080d12" />
+    <title>STÅLHEART — Sphere Laboratory</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="viewport"></canvas>
+      <header class="brand">
+        <div class="eyebrow">STÅLHEART / SPHERE LAB</div>
+        <h1>Planetary Grid Study</h1>
+        <p>Topology-first procedural surface laboratory</p>
+        <button id="open-devlog" class="text-button">DEVLOG / ENGINEERING NOTES</button>
+      </header>
+      <aside id="controls" class="panel controls"></aside>
+      <aside class="panel stats">
+        <div class="panel-title">LIVE TOPOLOGY</div>
+        <div id="stats-grid"></div>
+        <div id="validity" class="validity"></div>
+      </aside>
+      <section id="inspector" class="panel inspector">
+        <div class="panel-title">CELL INSPECTOR</div>
+        <p>Click a cell to inspect its topology.</p>
+      </section>
+      <div class="hint">DRAG TO ORBIT · SCROLL TO ZOOM · CLICK TO INSPECT</div>
+      <dialog id="devlog" class="devlog">
+        <form method="dialog" class="devlog-shell">
+          <header class="devlog-header">
+            <div><div class="eyebrow">STÅLHEART / DEVLOG 001</div><h2>Putting an organic quad grid on a sphere</h2></div>
+            <button class="close-button" value="close" aria-label="Close development log">×</button>
+          </header>
+          <div class="devlog-body">
+            <p class="lede">This prototype asks a deliberately awkward geometry question: can Stålberg-style, relaxed quad patches live inside a mostly-hexagonal spherical world while all unavoidable defects are localized into two readable polar crowns?</p>
+
+            <section><h3>01 — Two meshes, not one</h3>
+              <p>The useful abstraction is a three-layer stack. The <strong>macro topology</strong> owns cell identity and neighbor invariants. A <strong>canonical patch boundary</strong> owns every shared corner, edge sample, and subdivision midpoint. The <strong>micro mesh</strong> runs the organic Stålberg process inside each macro-cell.</p>
+              <p>Trying to make one mesh serve all three jobs coupled visual relaxation to gameplay topology. Separating them lets the micro-grid move freely while the macro graph remains exact and inspectable.</p>
+              <pre>macro graph → canonical boundary contract → relaxed quad patches</pre>
+            </section>
+
+            <section><h3>02 — The spherical defect budget</h3>
+              <p>For a trivalent polygon tiling of a sphere, <code>Σ(6 − sides) = 12</code>. Twelve pentagons are not an implementation accident; they are the curvature budget. STÅLHEART places six degree-five cells in the first northern collar and six in the southern collar. Every other macro-cell has degree six.</p>
+              <p>Each pole retains a tiny, degree-six epsilon cap. Collapsing that cap to a literal point looks tempting, but it either creates zero-area faces, changes the crown cells to four-neighbor regions, or violates the ordinary trivalent tiling. The finite cap is the smallest honest compromise: visually unified at game distance, topologically non-degenerate under inspection.</p>
+            </section>
+
+            <section><h3>03 — The Stålberg process, for real</h3>
+              <p>Every macro-cell receives a generalized patch. Six-sided cells use six sectors; crown pentagons use five. Within a patch we generate concentric polygon rings, connect them as triangle bands, randomly dissolve non-conflicting adjacent triangle pairs, subdivide surviving triangles into three quads, subdivide each dissolved quad into four quads, then perform tangent-space Laplacian relaxation.</p>
+              <p>The random choice is seeded. Border points never participate in relaxation. Interior displacement is projected into the local tangent plane and the result is normalized back to the sphere.</p>
+              <pre>triangle bands
+  → maximal seeded triangle pairing
+  → triangles × 3 quads / dissolved quads × 4 quads
+  → fixed-boundary Laplacian relaxation
+  → spherical projection</pre>
+            </section>
+
+            <section><h3>04 — Seams are a data-ownership problem</h3>
+              <p>Generating adjacent patches independently—even with identical formulas—is not a robust seam strategy. Each undirected macro-edge therefore has one canonical ordered sample sequence. The neighboring patch consumes the same objects in reverse order. Corners are keyed globally, as are the midpoints introduced when the triangle/quad network is subdivided.</p>
+              <p>This is stronger than epsilon-based coordinate welding: object identity itself expresses ownership. The test suite rebuilds the final quad complex from those identities and verifies that every micro-edge has exactly two incident quads.</p>
+            </section>
+
+            <section><h3>05 — Failures that changed the design</h3>
+              <dl>
+                <dt>Organic icosphere</dt><dd>Topologically sound, but its twelve pentagons remained geographically scattered. Labeling the nearest six “north” did not create crowns.</dd>
+                <dt>Visual pole convergence</dt><dd>Pulling unrelated dual vertices toward a pole produced convincing statistics and broken visible joints. Rendering validity is not topology validity.</dd>
+                <dt>Deleting the pole cell</dt><dd>The crown looked cleaner, but every pentagon became a four-neighbor adapter. Euler still passed in the restricted version; the requested degree invariant did not.</dd>
+                <dt>Angle-sorted dissolved quads</dt><dd>Projection-based sorting failed on curved polar patches and generated crossing edges. The fix was purely topological: remove the shared triangle edge and walk the four surviving boundary edges.</dd>
+                <dt>“Both endpoints are border vertices”</dt><dd>At low ring counts, an interior diagonal can satisfy that test. Explicit cyclic boundary-edge membership is required.</dd>
+              </dl>
+            </section>
+
+            <section><h3>06 — What is actually validated</h3>
+              <p>The automated matrix varies macro bands, micro rings, and seeds. It checks macro and micro Euler characteristic, two-face/two-quad edge incidence, exactly twelve degree-five pentagons, six per crown, two non-degenerate degree-six caps, deterministic generation, finite coordinates, non-zero quad edges, subdivision accounting, and canonical shared-sample counts.</p>
+              <p>The green badge is therefore a statement about both visible quad connectivity and the gameplay-scale topology—not merely the source triangulation.</p>
+            </section>
+
+            <section><h3>07 — References and lineage</h3>
+              <ul class="references">
+                <li><a href="https://www.youtube.com/watch?v=Uxeo9c-PX-w" target="_blank" rel="noreferrer">Oskar Stålberg — Beyond Townscaper (Sweden Game Conference 2021)</a><span>Primary discussion of the triangulate, merge, subdivide, and relax workflow, plus main-grid/dual-grid separation.</span></li>
+                <li><a href="https://konsoll.org/talks/the-story-of-townscaper/" target="_blank" rel="noreferrer">Oskar Stålberg — The Story of Townscaper</a><span>Primary development talk and broader procedural-design context.</span></li>
+                <li><a href="https://github.com/MarcusElg/GodotStalbergGrid" target="_blank" rel="noreferrer">Marcus Elg — GodotStalbergGrid</a><span>MIT-licensed Godot implementation used to verify the concrete triangle/quad construction sequence.</span></li>
+                <li><a href="https://john-wigg.dev/SphereScaper/" target="_blank" rel="noreferrer">John Wigg — SphereScaper</a><span>An independent spherical adaptation and useful comparison point for curvature and relaxation.</span></li>
+                <li><a href="https://www.boristhebrave.com/docs/sylves/1/articles/tutorials/townscaper.html" target="_blank" rel="noreferrer">BorisTheBrave / Sylves — Townscaper Grid</a><span>A clear derivative tutorial describing reusable hex-shaped chunks and their tiling constraints.</span></li>
+                <li><a href="https://github.com/Canadadry/NoneRegularMapGenerator" target="_blank" rel="noreferrer">Canadadry — NoneRegularMapGenerator</a><span>An alternative experimental implementation of an irregular relaxed grid.</span></li>
+                <li><a href="https://andersource.dev/2020/11/06/organic-grid.html" target="_blank" rel="noreferrer">andersource — Generating an organic grid</a><span>A different Delaunay/relaxation route; useful for contrasting topology-first and sampling-first approaches.</span></li>
+              </ul>
+            </section>
+
+            <section><h3>08 — Deliberate compromises</h3>
+              <p>This is a geometry laboratory, not the final game graph. Macro density is intentionally conservative because crown-preserving refinement needs transition-cap templates rather than blind midpoint subdivision. The micro-grid provides the high-frequency playable/visual structure. The pole cap remains visible in debug mode because hiding it would hide the exact place where topology and art direction negotiate.</p>
+            </section>
+          </div>
+        </form>
+      </dialog>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
