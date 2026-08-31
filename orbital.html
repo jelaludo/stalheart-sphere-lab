@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#070b10"><title>STÅLHEART — Orbital Polyhex Lab</title></head>
+<body><canvas id="viewport"></canvas><div class="orbital-ui">
+  <header><div class="eyebrow">STÅLHEART / ORBITAL POLYHEX</div><h1>Rotate the world.<br>Place the payload.</h1><nav><a href="./">SPHERE GRID</a><a class="active" href="./orbital.html">ORBITAL POLYHEX</a></nav></header>
+  <aside class="mission"><div class="panel-title">ORBITAL FABRICATION</div><div class="piece-row"><div><small>CURRENT</small><strong id="current-piece"></strong></div><div><small>NEXT</small><strong id="next-piece"></strong></div></div><div id="status" class="status"></div><div class="meter"><span>PLACED</span><b id="placed">0</b></div><div class="meter"><span>SOCKETS FILLED</span><b id="sockets">0 / 12</b></div></aside>
+  <aside class="help"><div class="panel-title">FLIGHT CONTROLS</div><p><kbd>WASD</kbd> rotate planet<br><kbd>drag</kbd> trackball rotation<br><kbd>Z / X</kbd> rotate payload 60°<br><kbd>SPACE</kbd> commit drop<br><kbd>R</kbd> restart · <kbd>F1</kbd> graph debug</p><div class="button-row"><button id="rotate-left">↶ PIECE</button><button id="drop">DROP</button><button id="restart">RESTART</button></div></aside>
+  <aside class="telemetry"><div class="panel-title">GRAPH TELEMETRY</div><div id="telemetry-grid"></div></aside>
+  <div class="orbital-label">FIXED ORBITAL FRAME</div><div class="footer-hint">THE PAYLOAD STAYS FIXED — ROTATE THE GRAPH BENEATH IT</div>
+</div><script type="module" src="/src/orbital-main.js"></script></body></html>

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "test": "node tests/topology.test.js",
+    "test": "node tests/topology.test.js && node tests/orbital.test.js",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {

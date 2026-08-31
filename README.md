@@ -2,6 +2,8 @@
 
 [Live sphere laboratory](https://jelaludo.github.io/stalheart-sphere-lab/)
 
+[Live Orbital Polyhex PoC](https://jelaludo.github.io/stalheart-sphere-lab/orbital.html)
+
 A topology-first browser experiment for exploring a mostly hexagonal Stålberg-cut planetary grid. This project deliberately contains no game systems.
 
 ## Run
@@ -26,6 +28,12 @@ Open the local URL printed by Vite.
 - filled cells, dual borders, primal triangulation, defects, and auto-rotation
 
 Click any cell to inspect its ID, side count, neighbor count, pole classification, and adjacency list.
+
+## Orbital Polyhex PoC
+
+The second laboratory tab treats the planet as a discrete graph first and a render mesh second. An icosphere's triangular faces become graph nodes in the dual: subdivision level 2 produces 162 cells, exactly 150 degree-six hexagons and 12 degree-five pentagons.
+
+Rotate the graph beneath a fixed orbital payload with `WASD` or pointer drag. Rotate the payload with `Z` / `X`, commit a valid projection with `Space`, restart with `R`, and toggle graph edges with `F1`. The preview validates duplicate targets, graph adjacency, occupancy, and pentagon socket rules before placement.
 
 ## Geometry notes
 
