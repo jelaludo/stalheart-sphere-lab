@@ -1,5 +1,7 @@
 # STÅLHEART Sphere Laboratory
 
+[Live sphere laboratory](https://jelaludo.github.io/stalheart-sphere-lab/)
+
 A topology-first browser experiment for exploring a mostly hexagonal Stålberg-cut planetary grid. This project deliberately contains no game systems.
 
 ## Run

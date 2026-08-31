@@ -54,4 +54,7 @@ button:hover { background: #19332c; }
 .validity { margin-top: 11px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.08); font: 600 9px 'IBM Plex Mono', monospace; color: #77d1ad; }
 .validity.bad { color: #ff8d77; }
 .hint { position: fixed; left: 50%; bottom: 13px; transform: translateX(-50%); color: #536565; white-space: nowrap; }
+#cell-labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.cell-label { position: absolute; display: grid; place-items: center; width: 24px; height: 24px; transform: translate(-50%,-50%); border: 1px solid #70ead8; border-radius: 50%; background: rgba(5,17,19,.9); color: #bafff3; box-shadow: 0 0 0 3px rgba(43,229,201,.12),0 3px 12px #000; font: 600 10px 'IBM Plex Mono',monospace; }
+.cell-label.selected { width: 29px; height: 29px; border-color: #ffc46e; background: rgba(38,23,7,.92); color: #ffd89d; box-shadow: 0 0 0 4px rgba(255,164,57,.15),0 3px 12px #000; }
 @media (max-width: 850px) { .brand { left: 16px; top: 16px; } .controls { right: 12px; top: 12px; width: 250px; } .stats { left: 16px; bottom: 16px; } .inspector { display:none; } .devlog-body dl { grid-template-columns: 1fr; gap: 3px; } }
